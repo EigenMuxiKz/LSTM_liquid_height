@@ -5,10 +5,10 @@ os.environ['TF_USE_LEGACY_KERAS'] = '1'
 import streamlit as st
 import numpy as np
 import pandas as pd
-import pickle  # Added missing import
+import pickle
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from tensorflow.keras.models import load_model
+import tensorflow as tf
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -30,7 +30,11 @@ Enter the pump speeds for both pumps and see how the liquid heights evolve over 
 @st.cache_resource
 def load_model_and_artifacts():
     try:
-        model = load_model('lstm_four_tank_model.h5')
+        # Try loading with compile=False to ignore optimizer issues
+        model = tf.keras.models.load_model('lstm_four_tank_model.h5', compile=False)
+        # Recompile the model
+        model.compile(optimizer='adam', loss='mse')
+        
         with open('model_artifacts.pkl', 'rb') as f:
             artifacts = pickle.load(f)
         return model, artifacts
