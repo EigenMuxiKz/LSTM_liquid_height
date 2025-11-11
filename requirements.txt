@@ -1,7 +1,8 @@
 streamlit
-numpy<2.0.0
+tensorflow
+numpy
 pandas
-tensorflow>=2.15.0
-tf_keras
+matplotlib
 scikit-learn
 plotly
+joblib
